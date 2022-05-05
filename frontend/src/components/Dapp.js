@@ -148,13 +148,32 @@ export class Dapp extends React.Component {
               The component doesn't have logic, it just calls the transferTokens
               callback.
             */}
-            {this.state.balance.gt(0) && (
+            {/* -------------------------------------------------- */}
+            {/* {this.state.balance.gt(0) && (
               <Transfer
                 transferTokens={(to, amount) =>
                   this._transferTokens(to, amount)
                 }
                 tokenSymbol={this.state.tokenData.symbol}
               />
+            )} */}
+            {/* -------------------------------------------------- */}
+            {this.state.balance.gt(0) && (
+              
+              <div className="row">
+                <div className="col-12">
+                  <Transfer
+                    transferTokens={(to, amount) =>
+                      this._transferTokens(to, amount)
+                    }
+                    tokenSymbol={this.state.tokenData.symbol}
+                  />
+                </div>
+                
+                <div className="col-12"></div>
+              </div>
+
+
             )}
           </div>
         </div>
