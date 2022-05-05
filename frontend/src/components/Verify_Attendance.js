@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Verify_Attendance({ verify_event }) {
+export function Verify_Attendance({ verify_attendance }) {
   return (
     <div>
       <h4>Verify someone's attendance</h4>
@@ -12,7 +12,7 @@ export function Verify_Attendance({ verify_event }) {
           const address = formData.get("address");
 
           if (event_id) {
-            verify_event(event_id,address);
+            verify_attendance(event_id,address);
           }
         }}
       >

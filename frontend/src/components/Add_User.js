@@ -9,6 +9,7 @@ export function Add_User({ add_user }) {
           event.preventDefault();
           const formData = new FormData(event.target);
           const address = formData.get("address");
+          console.log(address);
           if (address ) {
             add_user(address)
           }

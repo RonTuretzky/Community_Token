@@ -145,10 +145,10 @@ export class Dapp extends React.Component {
             {this.state.selectedAddress==="0xd8EADf4e11e4CEC8B6610e6Ab8eB93d717C8d17a".toLowerCase() && 
             (<div className="row">
               <div className="col-12">
-                <Create_Event create_event={this._create_event}/>
+                <Create_Event create_event={(event_id,host_address)=>this._create_event(event_id,host_address)}/>
               </div>
               <div className="col-12">
-                <Add_User add_user={this._add_user}/>
+                <Add_User add_user={(address)=>this._add_user(address)}/>
               </div>
             </div>)
             }
@@ -330,11 +330,11 @@ export class Dapp extends React.Component {
     this.setState({ txBeingSent: undefined });
   }
   }
-  
+
   async _create_event(event_id,host_address){
     try{
     this._dismissTransactionError();
-    const tx = await this._token.create_event(event_id,host_address,true);
+    const tx = await this._token.add_event(event_id,host_address,true);
     this.setState({ txBeingSent: tx.hash });
     const receipt = await tx.wait();
     if (receipt.status === 0) {
