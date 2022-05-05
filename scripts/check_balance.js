@@ -362,7 +362,7 @@ const TokenArtifact = [
         "type": "address"
       }
     ],
-    "name": "verify_attendence",
+    "name": "verify_attendance",
     "outputs": [
       {
         "internalType": "bool",

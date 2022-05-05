@@ -138,9 +138,9 @@ describe("Token contract", function () {
       await hardhatToken.connect(owner).add_event(1,addr3.address,true);
       await hardhatToken.connect(owner).add_event(2,addr3.address,true);
       await hardhatToken.connect(owner).add_event(3,addr3.address,true);
-      await hardhatToken.connect(addr3).verify_attendence(1,addr4.address);
-      await hardhatToken.connect(addr3).verify_attendence(2,addr4.address);
-      await hardhatToken.connect(addr3).verify_attendence(3,addr4.address);
+      await hardhatToken.connect(addr3).verify_attendance(1,addr4.address);
+      await hardhatToken.connect(addr3).verify_attendance(2,addr4.address);
+      await hardhatToken.connect(addr3).verify_attendance(3,addr4.address);
       const addr2Balance = await hardhatToken.balanceOf(
         addr4.address
       );

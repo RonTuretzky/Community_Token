@@ -20,7 +20,7 @@ interface CommunityToken {
     //------------------------------------------------------------------------------------------------//
     // A host wallet can use this function to verify that someone with a registered user wallet
     // has attended an event.
-    function verify_attendence(uint256 event_id_, address attendee)
+    function verify_attendance(uint256 event_id_, address attendee)
         external
         returns (bool);
 

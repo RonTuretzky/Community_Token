@@ -36,7 +36,7 @@ contract CommunityToken_ERC20 is ERC20, CommunityToken {
         return true;
     }
 
-    function verify_attendence(uint256 event_id_, address attendee)
+    function verify_attendance(uint256 event_id_, address attendee)
         public
         virtual
         override
@@ -45,7 +45,7 @@ contract CommunityToken_ERC20 is ERC20, CommunityToken {
         require(
             _event_ledger[event_id_]._host == msg.sender &&
                 _event_ledger[event_id_].Attendees[attendee] != true,
-            "Event doesn't exist, attendence was already verified, or you are not the host"
+            "Event doesn't exist, attendance was already verified, or you are not the host"
         );
         _event_ledger[event_id_].Attendees[attendee] = true;
         increment_count(attendee);
