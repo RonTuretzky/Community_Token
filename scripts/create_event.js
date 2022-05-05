@@ -392,7 +392,7 @@ async function main() {
     TokenArtifact,
     deployer
   );
-  let event_id = 3; 
+  let event_id = 1; 
   let host_addy = "0x5aC2b8745C55c1722Ee7e5625277dAB57Af9Dcf8"; 
   let token_payable = true; 
   const response = await c_t_contract.add_event(event_id, host_addy,token_payable); 
