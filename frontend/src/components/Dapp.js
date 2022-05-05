@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 
 // We import the contract's artifacts and address here, as we are going to be
 // using them with ethers
-import TokenArtifact from "Boilerplate_Community_Tokens\artifacts\contracts\CommunityToken_ERC20.sol\CommunityToken_ERC20.json";
+import TokenArtifact from "../contracts/CommunityToken_ERC20.json";
 import contractAddress from "../contracts/contract-address.json";
 
 // All the logic of this dapp is contained in the Dapp component.
