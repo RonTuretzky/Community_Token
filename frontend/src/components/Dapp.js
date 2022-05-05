@@ -15,6 +15,8 @@ import { NoWalletDetected } from "./NoWalletDetected";
 import { ConnectWallet } from "./ConnectWallet";
 import { Loading } from "./Loading";
 import { Transfer } from "./Transfer";
+import { Event_Payment } from "./Event_Payment";
+
 import { TransactionErrorMessage } from "./TransactionErrorMessage";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
@@ -169,8 +171,12 @@ export class Dapp extends React.Component {
                     tokenSymbol={this.state.tokenData.symbol}
                   />
                 </div>
-                
-                <div className="col-12"></div>
+
+                <div className="col-12">
+                <Event_Payment
+                  pay_for_event={(event_id)=> this._pay_for_event(event_id)}
+                />
+                </div>
               </div>
 
 
@@ -288,7 +294,38 @@ export class Dapp extends React.Component {
     const balance = await this._token.balanceOf(this.state.selectedAddress);
     this.setState({ balance });
   }
+  async _pay_for_event(event_id){
+    try{
+    this._dismissTransactionError();
+    const tx = await this._token.event_payment(event_id);
+    this.setState({ txBeingSent: tx.hash });
+    const receipt = await tx.wait();
+    if (receipt.status === 0) {
 
+      throw new Error("Transaction failed");
+
+    }
+
+    await this._updateBalance();
+
+  } catch (error) {
+
+    if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+      return;
+    }
+    console.error(error);
+
+    this.setState({ transactionError: error });
+
+  } finally {
+
+    this.setState({ txBeingSent: undefined });
+
+  }
+
+
+
+  }
   // This method sends an ethereum transaction to transfer tokens.
   // While this action is specific to this application, it illustrates how to
   // send a transaction.
