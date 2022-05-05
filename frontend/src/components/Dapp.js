@@ -16,9 +16,9 @@ import { ConnectWallet } from "./ConnectWallet";
 import { Loading } from "./Loading";
 import { Transfer } from "./Transfer";
 import { Event_Payment } from "./Event_Payment";
+import { Create_Event } from "./Create_Event";
+import { Add_User } from "./Add_User";
 import { Verify_Attendance } from "./Verify_Attendance";
-
-
 import { TransactionErrorMessage } from "./TransactionErrorMessage";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
@@ -140,28 +140,36 @@ export class Dapp extends React.Component {
         <div className="row">
           <div className="col-12">
             {/*
-              If the user has no tokens, we don't show the Transfer form
+              Admin only area
             */}
+            {this.state.selectedAddress==="0xd8EADf4e11e4CEC8B6610e6Ab8eB93d717C8d17a".toLowerCase() && 
+            (<div className="row">
+              <div className="col-12">
+                <Create_Event create_event={this._create_event}/>
+              </div>
+              <div className="col-12">
+                <Add_User add_user={this._add_user}/>
+              </div>
+            </div>)
+            }
+
+
             {this.state.balance.eq(0) && (
-              <NoTokensMessage selectedAddress={this.state.selectedAddress} />
+
+              <div className="row">
+                <div className="col-12">
+                  <NoTokensMessage selectedAddress={this.state.selectedAddress} />
+                </div>
+                <div className="col-12">
+                <Verify_Attendance
+                  verify_attendance={(event_id,address)=> this._verify_attendance(event_id,address)}
+                />
+                </div>
+              </div>
+              
             )}
 
-            {/*
-              This component displays a form that the user can use to send a 
-              transaction and transfer some tokens.
-              The component doesn't have logic, it just calls the transferTokens
-              callback.
-            */}
-            {/* -------------------------------------------------- */}
-            {/* {this.state.balance.gt(0) && (
-              <Transfer
-                transferTokens={(to, amount) =>
-                  this._transferTokens(to, amount)
-                }
-                tokenSymbol={this.state.tokenData.symbol}
-              />
-            )} */}
-            {/* -------------------------------------------------- */}
+ 
             {this.state.balance.gt(0) && (
               
               <div className="row">
@@ -184,6 +192,7 @@ export class Dapp extends React.Component {
                   verify_attendance={(event_id,address)=> this._verify_attendance(event_id,address)}
                 />
                 </div>
+
               </div>
 
 
@@ -300,6 +309,47 @@ export class Dapp extends React.Component {
   async _updateBalance() {
     const balance = await this._token.balanceOf(this.state.selectedAddress);
     this.setState({ balance });
+  }
+  async _add_user(address){
+    try{
+    this._dismissTransactionError();
+    const tx = await this._token.add_user(address);
+    this.setState({ txBeingSent: tx.hash });
+    const receipt = await tx.wait();
+    if (receipt.status === 0) {
+      throw new Error("Transaction failed");
+    }
+    await this._updateBalance();
+  } catch (error) {
+    if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+      return;
+    }
+    console.error(error);
+    this.setState({ transactionError: error });
+  } finally {
+    this.setState({ txBeingSent: undefined });
+  }
+  }
+  
+  async _create_event(event_id,host_address){
+    try{
+    this._dismissTransactionError();
+    const tx = await this._token.create_event(event_id,host_address,true);
+    this.setState({ txBeingSent: tx.hash });
+    const receipt = await tx.wait();
+    if (receipt.status === 0) {
+      throw new Error("Transaction failed");
+    }
+    await this._updateBalance();
+  } catch (error) {
+    if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+      return;
+    }
+    console.error(error);
+    this.setState({ transactionError: error });
+  } finally {
+    this.setState({ txBeingSent: undefined });
+  }
   }
   async _pay_for_event(event_id){
     try{
