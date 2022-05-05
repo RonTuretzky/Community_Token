@@ -20,7 +20,7 @@ contract CommunityToken_ERC20 is ERC20, CommunityToken {
 
     constructor(address WITH_ADMIN_) ERC20("Tel Hai", "WITH_TH") {
         _WITH_ADMIN = WITH_ADMIN_;
-        _mint(_WITH_ADMIN, 3);
+        _mint(_WITH_ADMIN, 400);
     }
 
     //----------------------- Event Ledger Functions ------------------------------------//
