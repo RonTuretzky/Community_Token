@@ -20,7 +20,7 @@ async function main() {
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
   const Token = await ethers.getContractFactory("CommunityToken_ERC20");
-  const token = await Token.deploy(deployer.address);
+  const token = await Token.deploy("0xd8eadf4e11e4cec8b6610e6ab8eb93d717c8d17a");
   await token.deployed();
 
   console.log("Token address:", token.address);
