@@ -16,6 +16,8 @@ import { ConnectWallet } from "./ConnectWallet";
 import { Loading } from "./Loading";
 import { Transfer } from "./Transfer";
 import { Event_Payment } from "./Event_Payment";
+import { Verify_Attendance } from "./Verify_Attendance";
+
 
 import { TransactionErrorMessage } from "./TransactionErrorMessage";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
@@ -177,6 +179,11 @@ export class Dapp extends React.Component {
                   pay_for_event={(event_id)=> this._pay_for_event(event_id)}
                 />
                 </div>
+                <div className="col-12">
+                <Verify_Attendance
+                  verify_attendance={(event_id,address)=> this._verify_attendance(event_id,address)}
+                />
+                </div>
               </div>
 
 
@@ -298,6 +305,27 @@ export class Dapp extends React.Component {
     try{
     this._dismissTransactionError();
     const tx = await this._token.event_payment(event_id);
+    this.setState({ txBeingSent: tx.hash });
+    const receipt = await tx.wait();
+    if (receipt.status === 0) {
+      throw new Error("Transaction failed");
+    }
+    await this._updateBalance();
+  } catch (error) {
+    if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+      return;
+    }
+    console.error(error);
+    this.setState({ transactionError: error });
+  } finally {
+    this.setState({ txBeingSent: undefined });
+  }
+  }
+
+  async _verify_attendance(event_id,address){
+    try{
+    this._dismissTransactionError();
+    const tx = await this._token.verify_attendance(event_id,address);
     this.setState({ txBeingSent: tx.hash });
     const receipt = await tx.wait();
     if (receipt.status === 0) {
