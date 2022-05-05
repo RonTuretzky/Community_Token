@@ -33,8 +33,8 @@ task("faucet", "Sends ETH and tokens to an address")
     const token = await ethers.getContractAt("CommunityToken_ERC20", address.Token);
     const [sender] = await ethers.getSigners();
 
-    const tx = await token.transfer(receiver, 1);
-    await tx.wait();
+    // const tx = await token.transfer(receiver, 1);
+    // await tx.wait();
 
     const tx2 = await sender.sendTransaction({
       to: receiver,
