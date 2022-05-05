@@ -19,8 +19,8 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const Token = await ethers.getContractFactory("Token");
-  const token = await Token.deploy();
+  const Token = await ethers.getContractFactory("CommunityToken_ERC20");
+  const token = await Token.deploy(deployer.address);
   await token.deployed();
 
   console.log("Token address:", token.address);
@@ -42,10 +42,10 @@ function saveFrontendFiles(token) {
     JSON.stringify({ Token: token.address }, undefined, 2)
   );
 
-  const TokenArtifact = artifacts.readArtifactSync("Token");
+  const TokenArtifact = artifacts.readArtifactSync("CommunityToken_ERC20");
 
   fs.writeFileSync(
-    contractsDir + "/Token.json",
+    contractsDir + "/CommunityToken_ERC20.json",
     JSON.stringify(TokenArtifact, null, 2)
   );
 }
