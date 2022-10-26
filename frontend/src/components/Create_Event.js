@@ -23,7 +23,7 @@ export function Create_Event({ create_event }) {
           />
         </div>
         <div className="form-group">
-        <label>Event attendee's address</label>
+        <label>Event host's address</label>
           <input
             className="form-control"
             type="text"
