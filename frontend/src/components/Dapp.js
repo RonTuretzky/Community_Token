@@ -7,6 +7,7 @@ import { ethers } from "ethers";
 // using them with ethers
 import TokenArtifact from "../contracts/CommunityToken_ERC20.json";
 import contractAddress from "../contracts/contract-address.json";
+import admin_address from "../contracts/owner-address.json";
 
 // All the logic of this dapp is contained in the Dapp component.
 // These other components are just presentational ones: they don't have any
@@ -142,7 +143,7 @@ export class Dapp extends React.Component {
             {/*
               Admin only area
             */}
-            {this.state.selectedAddress==="0xd8EADf4e11e4CEC8B6610e6Ab8eB93d717C8d17a".toLowerCase() && 
+            {this.state.selectedAddress===admin_address.owner.toLowerCase() && 
             (<div className="row">
               <div className="col-12">
                 <Create_Event create_event={(event_id,host_address)=>this._create_event(event_id,host_address)}/>
