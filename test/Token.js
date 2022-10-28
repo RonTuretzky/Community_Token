@@ -133,7 +133,6 @@ describe("Token contract", function () {
     });
     it ("Full usecase", async function(){
       await hardhatToken.connect(owner).add_user(addr3.address);
-      console.log("Passed first line");
       await hardhatToken.connect(owner).add_user(addr4.address);
       await hardhatToken.connect(owner).add_event(1,addr3.address,true);
       await hardhatToken.connect(owner).add_event(2,addr3.address,true);
